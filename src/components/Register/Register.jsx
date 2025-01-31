@@ -1,6 +1,5 @@
-// Register.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import { useState } from 'react';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -27,6 +26,12 @@ const Register = () => {
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
+                setFormData({   // Clear the form
+                    name: '',
+                    email: '',
+                    aadhar: '',
+                    password: '',
+                });
             } else {
                 alert(data.message || 'Registration failed');
             }
@@ -37,9 +42,9 @@ const Register = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-pink-500 to-orange-500 w-screen">
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-pink-500 to-orange-500 w-full">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Register</h2>
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Voters Registration</h2>
                 <form id="registerForm" className="space-y-4" onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -81,12 +86,6 @@ const Register = () => {
                         Register
                     </button>
                 </form>
-                <p className="text-center mt-4 text-gray-600">
-                    Already have an account?{' '}
-                    <Link to="/login" className="text-pink-500 font-bold hover:underline">
-                        Login
-                    </Link>
-                </p>
             </div>
         </div>
     );

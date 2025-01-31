@@ -1,14 +1,14 @@
-// Login.js
-import { useContext,useState } from 'react';
+// AdminLogin.js
+import { useContext, useState } from 'react';
 import { AuthContext } from '../AuthContext';
 
-const Login = () => {
+const AdminLogin = () => {
     const [formData, setFormData] = useState({
-        aadhar: '',
+        email: '',
         password: '',
     });
 
-        const { login } = useContext(AuthContext);
+    const { login } = useContext(AuthContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -18,49 +18,48 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://localhost:5000/adminlogin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
             const data = await response.json();
-            
             if (response.ok) {
                 console.log(data)
                 const token = data.token;
                 localStorage.setItem('token', token);
                 const user = data.user;
-                console.log('Login user:', user);
+                console.log('AdminLogin user:', user);
                 localStorage.setItem('user', JSON.stringify(user));
 
-                login({ ...data.user, aadhar });
+                login(user);
 
-                window.location.href = '/vote';
-
-                alert(data.message);
+                window.location.href = '/register';
+                
+                // alert(data.message);
                 // Redirect to dashboard or home page
             } else {
-                alert(data.message || 'Login failed');
+                alert(data.message || 'AdminLogin failed');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Login failed');
+            alert('AdminLogin failed');
         }
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-pink-500 to-orange-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
-                <form id="loginForm" className="space-y-4" onSubmit={handleSubmit}>
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">AdminLogin</h2>
+                <form id="AdminLoginForm" className="space-y-4" onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        id="aadhar"
-                        placeholder="Aadhar Number"
+                        id="email"
+                        placeholder="Email"
                         required
                         className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                        value={formData.aadhar}
+                        value={formData.email}
                         onChange={handleChange}
                     />
                     <input
@@ -73,7 +72,7 @@ const Login = () => {
                         onChange={handleChange}
                     />
                     <button type="submit" className="w-full p-3 bg-pink-500 text-white font-bold rounded hover:bg-pink-600">
-                        Login
+                        AdminLogin
                     </button>
                 </form>
             </div>
@@ -81,4 +80,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default AdminLogin;
